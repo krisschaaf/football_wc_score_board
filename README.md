@@ -12,3 +12,9 @@ Developed as part of the Sportradar technical interview.
 ### Comitting code
 - Commit messages follow the 'conventional commit' principle for readability purposes
   (https://www.conventionalcommits.org/en/v1.0.0/)
+
+### Why no UI is implemented
+This solution is intentionally implemented as a plain Java library without a user interface. 
+The exercise explicitly asks for a **simple library** with an in-memory store and states that it is 
+not looking for a REST API, web service or microservice. 
+The requirements focus on core domain logic, test-driven development, clean code and SOLID principles.
