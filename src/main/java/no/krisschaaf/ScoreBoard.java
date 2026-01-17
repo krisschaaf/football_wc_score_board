@@ -41,13 +41,13 @@ public class ScoreBoard {
 
         if (game == null) {
             GameKey invertedGameKey = new GameKey(awayTeamName, homeTeamName);
-            if (onGoingGames.containsKey(invertedGameKey)) {
-                String message = "Game that should be finished is not ongoing! Did you mean: "
-                        + awayTeamName + " - " + homeTeamName;
-                throw new IllegalArgumentException(message);
-            } else {
-                throw new IllegalArgumentException("Game that should be finished is not ongoing!");
-            }
+
+            String message = onGoingGames.containsKey(invertedGameKey)
+                    ? "Game that should be finished is not ongoing! Did you mean: "
+                            + awayTeamName + " - " + homeTeamName
+                    : "Game that should be finished is not ongoing!";
+
+            throw new IllegalArgumentException(message);
         }
     }
 
@@ -63,8 +63,19 @@ public class ScoreBoard {
         }
 
         GameKey gameKeyToUpdate = new GameKey(homeTeamName, awayTeamName);
-
         Game gameToUpdate = this.onGoingGames.get(gameKeyToUpdate);
+
+        if (gameToUpdate == null) {
+            GameKey invertedGameKey = new GameKey(awayTeamName, homeTeamName);
+
+            String message = onGoingGames.containsKey(invertedGameKey)
+                    ? "Game that should be updated is not ongoing! Did you mean: "
+                    + awayTeamName + " - " + homeTeamName
+                    : "Game that should be updated is not ongoing!";
+
+            throw new IllegalArgumentException(message);
+        }
+
         gameToUpdate.setHomeTeamScore(homeTeamScore);
         gameToUpdate.setAwayTeamScore(awayTeamScore);
     }

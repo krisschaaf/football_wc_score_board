@@ -247,4 +247,42 @@ public class ScoreBoardTest {
         assertNotNull(exception);
         assertEquals("Team scores must not be negative when updating score!", exception.getMessage());
     }
+
+    @Test
+    public void shouldThrowExceptionWhenUpdatingScoresForNotOngoingGame() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME, 1, 0);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+        assertEquals("Game that should be updated is not ongoing!", exception.getMessage());
+    }
+
+    @Test
+    public void shouldThrowExceptionAndProposeOngoingGameWhenReceivedTeamNamesForUpdatingAGameWereInverted() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+            this.scoreBoard.updateScore(TestUtils.AWAY_TEAM_NAME, TestUtils.HOME_TEAM_NAME, 1 ,0);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+
+        String message = "Game that should be updated is not ongoing! Did you mean: "
+                + TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME;
+        assertEquals(message, exception.getMessage());
+    }
 }
