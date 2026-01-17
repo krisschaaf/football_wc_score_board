@@ -1,13 +1,13 @@
 package no.krisschaaf;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 
 public class ScoreBoard {
-    private final LinkedHashMap<GameKey, Game> onGoingGames;
+    private final HashMap<GameKey, Game> onGoingGames;
 
     public ScoreBoard() {
-        this.onGoingGames = new LinkedHashMap<>();
+        this.onGoingGames = new HashMap<>();
     }
 
     public void startGame(String homeTeamName, String awayTeamName) {
