@@ -36,7 +36,14 @@ public class ScoreBoard {
         Game game = this.onGoingGames.remove(finishedGameKey);
 
         if (game == null) {
-            throw new IllegalArgumentException("Game that should be finished is not ongoing!");
+            GameKey invertedGameKey = new GameKey(awayTeamName, homeTeamName);
+            if (onGoingGames.containsKey(invertedGameKey)) {
+                String message = "Game that should be finished is not ongoing! Did you mean: "
+                        + awayTeamName + " - " + homeTeamName;
+                throw new IllegalArgumentException(message);
+            } else {
+                throw new IllegalArgumentException("Game that should be finished is not ongoing!");
+            }
         }
     }
 

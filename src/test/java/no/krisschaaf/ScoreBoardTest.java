@@ -107,6 +107,27 @@ public class ScoreBoardTest {
     }
 
     @Test
+    public void shouldThrowExceptionAndProposeOngoingGameWhenReceivedTeamNamesForFinishingAGameWereInverted() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+            this.scoreBoard.finishGame(TestUtils.AWAY_TEAM_NAME, TestUtils.HOME_TEAM_NAME);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+
+        String message = "Game that should be finished is not ongoing! Did you mean: "
+                + TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME;
+        assertEquals(message, exception.getMessage());
+    }
+
+    @Test
     public void shouldThrowExceptionWhenTeamShouldFinishAgainstThemself() {
         // Given
         Exception exception = null;
