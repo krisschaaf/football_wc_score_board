@@ -18,3 +18,8 @@ This solution is intentionally implemented as a plain Java library without a use
 The exercise explicitly asks for a **simple library** with an in-memory store and states that it is 
 not looking for a REST API, web service or microservice. 
 The requirements focus on core domain logic, test-driven development, clean code and SOLID principles.
+
+### Requirements Engineering
+To gain an initial idea of the system I created a small rudimentary component diagram.
+This isn't final in any way. The final design of the system will be driven by the tests.
+
