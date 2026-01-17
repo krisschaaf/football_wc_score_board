@@ -7,10 +7,14 @@ public class ScoreBoard {
     private LinkedHashMap<GameKey, Game> onGoingGames;
 
     public ScoreBoard() {
-        this.onGoingGames = new LinkedHashMap<GameKey, Game>();
+        this.onGoingGames = new LinkedHashMap<>();
     }
 
     public void startGame(String homeTeamName, String awayTeamName) {
+        if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
+            throw new IllegalArgumentException("Missing team name when starting game!");
+        }
+
         Game startedGame = new Game(homeTeamName, awayTeamName);
         GameKey startedGameKey = new GameKey(homeTeamName, awayTeamName);
 

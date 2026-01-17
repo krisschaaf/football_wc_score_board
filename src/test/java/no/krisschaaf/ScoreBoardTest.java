@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ScoreBoardTest {
     private ScoreBoard scoreBoard;
@@ -24,5 +25,22 @@ public class ScoreBoardTest {
         // Then
         assertEquals(1, summarizedGames.size());
         assertEquals("Mexico - Canada: 0 - 0", summarizedGames.getFirst());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenStartingGameWithEmptyTeamNames() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.startGame("", "");
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+        assertEquals("Missing team name when starting game!", exception.getMessage());
     }
 }
