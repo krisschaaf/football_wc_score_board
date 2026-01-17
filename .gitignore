@@ -2,3 +2,4 @@
 .mvn
 target
 .DS_Store
+docs/class_component_diagram.drawio
