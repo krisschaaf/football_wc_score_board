@@ -44,7 +44,24 @@ public class ScoreBoardTest {
 
         String message_2 = TestUtils.HOME_TEAM_NAME_2 + " - " + TestUtils.AWAY_TEAM_NAME_2 + ": 0 - 0";
         assertEquals(message_2, summarizedGames.getLast());
+    }
 
+    @Test
+    public void shouldThrowExceptionWhenToBeStartedGameIsAlreadyOngoing() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+        assertEquals("Game that should be started is already ongoing!", exception.getMessage());
     }
 
     @Test

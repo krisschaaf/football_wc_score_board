@@ -21,7 +21,11 @@ public class ScoreBoard {
         Game startedGame = new Game(homeTeamName, awayTeamName);
         GameKey startedGameKey = new GameKey(homeTeamName, awayTeamName);
 
-        onGoingGames.put(startedGameKey, startedGame);
+        Game game = onGoingGames.put(startedGameKey, startedGame);
+
+        if (game != null) {
+            throw new IllegalArgumentException("Game that should be started is already ongoing!");
+        }
     }
 
     public void finishGame(String homeTeamName, String awayTeamName) {
