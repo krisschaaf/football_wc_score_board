@@ -51,6 +51,14 @@ public class ScoreBoard {
         }
     }
 
+    public void updateScore(String homeTeamName, String awayTeamName, int homeTeamScore, int awayTeamScore) {
+        GameKey gameKeyToUpdate = new GameKey(homeTeamName, awayTeamName);
+
+        Game gameToUpdate = this.onGoingGames.get(gameKeyToUpdate);
+        gameToUpdate.setHomeTeamScore(homeTeamScore);
+        gameToUpdate.setAwayTeamScore(awayTeamScore);
+    }
+
     public List<String> getSummary() {
         return onGoingGames.values().stream()
                 .map(Game::toString)

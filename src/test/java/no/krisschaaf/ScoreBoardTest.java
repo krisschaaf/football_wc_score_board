@@ -20,9 +20,9 @@ public class ScoreBoardTest {
     public void shouldCaptureInitialZeroZeroScoreWhenStartingGame() {
         // When
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
-        List<String> summarizedGames = this.scoreBoard.getSummary();
 
         // Then
+        List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(1, summarizedGames.size());
 
         String message = TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME + ": 0 - 0";
@@ -34,9 +34,9 @@ public class ScoreBoardTest {
         // When
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2);
-        List<String> summarizedGames = this.scoreBoard.getSummary();
 
         // Then
+        List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(2, summarizedGames.size());
 
         String message = TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME + ": 0 - 0";
@@ -103,9 +103,9 @@ public class ScoreBoardTest {
         // When
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
         this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
-        List<String> summarizedGames = this.scoreBoard.getSummary();
 
         // Then
+        List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(0, summarizedGames.size());
     }
 
@@ -179,5 +179,19 @@ public class ScoreBoardTest {
         // Then
         assertNotNull(exception);
         assertEquals("Teams cannot play against themselves!", exception.getMessage());
+    }
+
+    @Test
+    public void shouldUpdateGameScore() {
+        // When
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME, 1, 0);
+
+        // Then
+        List<String> summarizedGames = this.scoreBoard.getSummary();
+        assertEquals(1, summarizedGames.size());
+
+        String message = TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME + ": 1 - 0";
+        assertEquals(message, summarizedGames.getFirst());
     }
 }

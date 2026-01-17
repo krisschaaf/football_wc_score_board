@@ -12,6 +12,7 @@ Developed as part of the Sportradar technical interview.
 ### Comitting code
 - Commit messages follow the 'conventional commit' principle for readability purposes
   (https://www.conventionalcommits.org/en/v1.0.0/)
+- For TDD demonstration purposes the commits are always related to one green test and therefor very small.
 
 ### Why no UI is implemented
 This solution is intentionally implemented as a plain Java library without a user interface. 

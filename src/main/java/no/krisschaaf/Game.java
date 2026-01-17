@@ -1,8 +1,8 @@
 package no.krisschaaf;
 
 public class Game {
-    private String homeTeamName;
-    private String awayTeamName;
+    private final String homeTeamName;
+    private final String awayTeamName;
 
     private int homeTeamScore;
     private int awayTeamScore;
@@ -13,6 +13,14 @@ public class Game {
 
         this.homeTeamScore = 0;
         this.awayTeamScore = 0;
+    }
+
+    public void setHomeTeamScore(int score) {
+        this.homeTeamScore = score;
+    }
+
+    public void setAwayTeamScore(int score) {
+        this.awayTeamScore = score;
     }
 
     @Override
