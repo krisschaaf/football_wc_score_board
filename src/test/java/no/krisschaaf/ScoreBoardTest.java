@@ -54,4 +54,21 @@ public class ScoreBoardTest {
         // Then
         assertEquals(0, summarizedGames.size());
     }
+
+    @Test
+    public void shouldThrowExceptionWhenFinishingGameWithEmptyTeamNames() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.finishGame("", "");
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+        assertEquals("Missing team name when finishing game!", exception.getMessage());
+    }
 }

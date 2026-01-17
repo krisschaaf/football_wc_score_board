@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ScoreBoard {
-    private LinkedHashMap<GameKey, Game> onGoingGames;
+    private final LinkedHashMap<GameKey, Game> onGoingGames;
 
     public ScoreBoard() {
         this.onGoingGames = new LinkedHashMap<>();
@@ -22,6 +22,10 @@ public class ScoreBoard {
     }
 
     public void finishGame(String homeTeamName, String awayTeamName) {
+        if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
+            throw new IllegalArgumentException("Missing team name when finishing game!");
+        }
+
         GameKey finishedGameKey = new GameKey(homeTeamName, awayTeamName);
         this.onGoingGames.remove(finishedGameKey);
     }
