@@ -24,7 +24,27 @@ public class ScoreBoardTest {
 
         // Then
         assertEquals(1, summarizedGames.size());
-        assertEquals("Mexico - Canada: 0 - 0", summarizedGames.getFirst());
+
+        String message = TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME + ": 0 - 0";
+        assertEquals(message, summarizedGames.getFirst());
+    }
+
+    @Test
+    public void shouldCaptureInitialZeroZeroScoreWhenStartingMultipleGames() {
+        // When
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2);
+        List<String> summarizedGames = this.scoreBoard.getSummary();
+
+        // Then
+        assertEquals(2, summarizedGames.size());
+
+        String message = TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME + ": 0 - 0";
+        assertEquals(message, summarizedGames.getFirst());
+
+        String message_2 = TestUtils.HOME_TEAM_NAME_2 + " - " + TestUtils.AWAY_TEAM_NAME_2 + ": 0 - 0";
+        assertEquals(message_2, summarizedGames.getLast());
+
     }
 
     @Test
