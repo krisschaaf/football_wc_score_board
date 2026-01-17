@@ -27,7 +27,11 @@ public class ScoreBoard {
         }
 
         GameKey finishedGameKey = new GameKey(homeTeamName, awayTeamName);
-        this.onGoingGames.remove(finishedGameKey);
+        Game game = this.onGoingGames.remove(finishedGameKey);
+
+        if (game == null) {
+            throw new IllegalArgumentException("Game that should be finished is not ongoing!");
+        }
     }
 
     public List<String> getSummary() {

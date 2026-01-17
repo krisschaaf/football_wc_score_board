@@ -71,4 +71,21 @@ public class ScoreBoardTest {
         assertNotNull(exception);
         assertEquals("Missing team name when finishing game!", exception.getMessage());
     }
+
+    @Test
+    public void shouldThrowExceptionWhenFinishingGameIsNotOngoing() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+        assertEquals("Game that should be finished is not ongoing!", exception.getMessage());
+    }
 }
