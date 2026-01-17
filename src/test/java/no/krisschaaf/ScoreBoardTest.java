@@ -45,6 +45,23 @@ public class ScoreBoardTest {
     }
 
     @Test
+    public void shouldThrowExceptionWhenTeamShouldPlayAgainstThemself() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.HOME_TEAM_NAME);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+        assertEquals("Teams cannot play against themselves!", exception.getMessage());
+    }
+
+    @Test
     public void shouldRemoveGameFromBoardWhenFinishingGame() {
         // When
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
@@ -87,5 +104,22 @@ public class ScoreBoardTest {
         // Then
         assertNotNull(exception);
         assertEquals("Game that should be finished is not ongoing!", exception.getMessage());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTeamShouldFinishAgainstThemself() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME, TestUtils.HOME_TEAM_NAME);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+        assertEquals("Teams cannot play against themselves!", exception.getMessage());
     }
 }

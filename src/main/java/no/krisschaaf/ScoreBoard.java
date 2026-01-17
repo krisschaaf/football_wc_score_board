@@ -14,6 +14,9 @@ public class ScoreBoard {
         if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
             throw new IllegalArgumentException("Missing team name when starting game!");
         }
+        if (homeTeamName.equals(awayTeamName)) {
+            throw new IllegalArgumentException("Teams cannot play against themselves!");
+        }
 
         Game startedGame = new Game(homeTeamName, awayTeamName);
         GameKey startedGameKey = new GameKey(homeTeamName, awayTeamName);
@@ -24,6 +27,9 @@ public class ScoreBoard {
     public void finishGame(String homeTeamName, String awayTeamName) {
         if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
             throw new IllegalArgumentException("Missing team name when finishing game!");
+        }
+        if (homeTeamName.equals(awayTeamName)) {
+            throw new IllegalArgumentException("Teams cannot play against themselves!");
         }
 
         GameKey finishedGameKey = new GameKey(homeTeamName, awayTeamName);
