@@ -82,6 +82,13 @@ public class ScoreBoard {
 
     public List<String> getSummary() {
         return onGoingGames.values().stream()
+                .sorted((g1, g2) -> {
+                    int comp = g2.getTotalScore() - g1.getTotalScore();
+                    if (comp == 0) {
+                        return g2.getCreatedAt().compareTo(g1.getCreatedAt());
+                    }
+                    return comp;
+                })
                 .map(Game::toString)
                 .toList();
     }

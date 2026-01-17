@@ -1,8 +1,11 @@
 package no.krisschaaf;
 
+import java.time.Instant;
+
 public class Game {
     private final String homeTeamName;
     private final String awayTeamName;
+    private final Instant createdAt;
 
     private int homeTeamScore;
     private int awayTeamScore;
@@ -13,6 +16,8 @@ public class Game {
 
         this.homeTeamScore = 0;
         this.awayTeamScore = 0;
+
+        this.createdAt = Instant.now();
     }
 
     public void setHomeTeamScore(int score) {
@@ -21,6 +26,14 @@ public class Game {
 
     public void setAwayTeamScore(int score) {
         this.awayTeamScore = score;
+    }
+
+    public int getTotalScore() {
+        return this.homeTeamScore + this.awayTeamScore;
+    }
+
+    public Instant getCreatedAt() {
+        return this.createdAt;
     }
 
     @Override
