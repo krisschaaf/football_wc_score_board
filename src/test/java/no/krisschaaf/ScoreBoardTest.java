@@ -43,4 +43,15 @@ public class ScoreBoardTest {
         assertNotNull(exception);
         assertEquals("Missing team name when starting game!", exception.getMessage());
     }
+
+    @Test
+    public void shouldRemoveGameFromBoardWhenFinishingGame() {
+        // When
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        List<String> summarizedGames = this.scoreBoard.getSummary();
+
+        // Then
+        assertEquals(0, summarizedGames.size());
+    }
 }

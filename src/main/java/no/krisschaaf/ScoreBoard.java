@@ -21,6 +21,11 @@ public class ScoreBoard {
         onGoingGames.put(startedGameKey, startedGame);
     }
 
+    public void finishGame(String homeTeamName, String awayTeamName) {
+        GameKey finishedGameKey = new GameKey(homeTeamName, awayTeamName);
+        this.onGoingGames.remove(finishedGameKey);
+    }
+
     public List<String> getSummary() {
         return onGoingGames.values().stream()
                 .map(Game::toString)
