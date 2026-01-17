@@ -194,4 +194,57 @@ public class ScoreBoardTest {
         String message = TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME + ": 1 - 0";
         assertEquals(message, summarizedGames.getFirst());
     }
+
+    @Test
+    public void shouldThrowExceptionWhenUpdatingScoreWithoutTeamNames() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+            this.scoreBoard.updateScore("", "", 0, 0);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+        assertEquals("Missing team name when updating score!", exception.getMessage());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenUpdatingScoreWithIdenticalTeamNames() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.HOME_TEAM_NAME, 0, 0);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+        assertEquals("Teams cannot play against themselves!", exception.getMessage());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenUpdatingScoreWithNegativeTeamScores() {
+        // Given
+        Exception exception = null;
+
+        // When
+        try {
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+            this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME, -1, -1);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // Then
+        assertNotNull(exception);
+        assertEquals("Team scores must not be negative when updating score!", exception.getMessage());
+    }
 }

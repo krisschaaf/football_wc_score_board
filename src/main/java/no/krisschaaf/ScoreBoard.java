@@ -52,6 +52,16 @@ public class ScoreBoard {
     }
 
     public void updateScore(String homeTeamName, String awayTeamName, int homeTeamScore, int awayTeamScore) {
+        if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
+            throw new IllegalArgumentException("Missing team name when updating score!");
+        }
+        if (homeTeamName.equals(awayTeamName)) {
+            throw new IllegalArgumentException("Teams cannot play against themselves!");
+        }
+        if (homeTeamScore < 0 || awayTeamScore < 0 ) {
+            throw new IllegalArgumentException("Team scores must not be negative when updating score!");
+        }
+
         GameKey gameKeyToUpdate = new GameKey(homeTeamName, awayTeamName);
 
         Game gameToUpdate = this.onGoingGames.get(gameKeyToUpdate);
