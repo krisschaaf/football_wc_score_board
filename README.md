@@ -20,6 +20,8 @@ not looking for a REST API, web service or microservice.
 The requirements focus on core domain logic, test-driven development, clean code and SOLID principles.
 
 ### Requirements Engineering
-To gain an initial idea of the system I created a small rudimentary component diagram.
+To gain an initial idea of the system, a small rudimentary component diagram was created as starting point.
 This isn't final in any way. The final design of the system will be driven by the tests.
+In retrospective, this diagram helped plan the initial data structures, but had many flaws that had to be updated
+during the further implementation.
 
