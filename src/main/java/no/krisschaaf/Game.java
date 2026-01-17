@@ -25,6 +25,6 @@ public class Game {
 
     @Override
     public String toString() {
-        return this.homeTeamName + " - " + this.awayTeamName + ": " + this.homeTeamScore + " - " + this.awayTeamScore;
+        return this.homeTeamName + " " + this.homeTeamScore + " - " + this.awayTeamName + " " + this.awayTeamScore;
     }
 }

@@ -25,7 +25,7 @@ public class ScoreBoardTest {
         List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(1, summarizedGames.size());
 
-        String message = TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME + ": 0 - 0";
+        String message = TestUtils.HOME_TEAM_NAME + " 0 - " + TestUtils.AWAY_TEAM_NAME + " 0";
         assertEquals(message, summarizedGames.getFirst());
     }
 
@@ -39,10 +39,10 @@ public class ScoreBoardTest {
         List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(2, summarizedGames.size());
 
-        String message = TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME + ": 0 - 0";
+        String message = TestUtils.HOME_TEAM_NAME + " 0 - " + TestUtils.AWAY_TEAM_NAME + " 0";
         assertEquals(message, summarizedGames.getFirst());
 
-        String message_2 = TestUtils.HOME_TEAM_NAME_2 + " - " + TestUtils.AWAY_TEAM_NAME_2 + ": 0 - 0";
+        String message_2 = TestUtils.HOME_TEAM_NAME_2 + " 0 - " + TestUtils.AWAY_TEAM_NAME_2 + " 0";
         assertEquals(message_2, summarizedGames.getLast());
     }
 
@@ -191,7 +191,7 @@ public class ScoreBoardTest {
         List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(1, summarizedGames.size());
 
-        String message = TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME + ": 1 - 0";
+        String message = TestUtils.HOME_TEAM_NAME + " 1 - " + TestUtils.AWAY_TEAM_NAME + " 0";
         assertEquals(message, summarizedGames.getFirst());
     }
 
