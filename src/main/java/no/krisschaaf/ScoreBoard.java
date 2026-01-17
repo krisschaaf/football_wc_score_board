@@ -18,8 +18,8 @@ public class ScoreBoard {
             throw new IllegalArgumentException("Teams cannot play against themselves!");
         }
 
-        Game startedGame = new Game(homeTeamName, awayTeamName);
         GameKey startedGameKey = new GameKey(homeTeamName, awayTeamName);
+        Game startedGame = new Game(homeTeamName, awayTeamName);
 
         Game game = onGoingGames.put(startedGameKey, startedGame);
 
@@ -36,8 +36,8 @@ public class ScoreBoard {
             throw new IllegalArgumentException("Teams cannot play against themselves!");
         }
 
-        GameKey finishedGameKey = new GameKey(homeTeamName, awayTeamName);
-        Game game = this.onGoingGames.remove(finishedGameKey);
+        GameKey gameKeyToFinish = new GameKey(homeTeamName, awayTeamName);
+        Game game = this.onGoingGames.remove(gameKeyToFinish);
 
         if (game == null) {
             GameKey invertedGameKey = new GameKey(awayTeamName, homeTeamName);
