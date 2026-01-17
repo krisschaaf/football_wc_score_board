@@ -19,31 +19,35 @@ public class ScoreBoardTest {
     @Test
     public void shouldCaptureInitialZeroZeroScoreWhenStartingGame() {
         // When
-        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
 
         // Then
         List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(1, summarizedGames.size());
 
-        String message = TestUtils.HOME_TEAM_NAME + " 0 - " + TestUtils.AWAY_TEAM_NAME + " 0";
+        String message = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 0, 0);
         assertEquals(message, summarizedGames.getFirst());
+
     }
 
     @Test
     public void shouldCaptureInitialZeroZeroScoreWhenStartingMultipleGames() {
         // When
-        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2);
 
         // Then
         List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(2, summarizedGames.size());
 
-        String message = TestUtils.HOME_TEAM_NAME + " 0 - " + TestUtils.AWAY_TEAM_NAME + " 0";
+        String message = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 0, 0);
         assertEquals(message, summarizedGames.getLast());
 
-        String message_2 = TestUtils.HOME_TEAM_NAME_2 + " 0 - " + TestUtils.AWAY_TEAM_NAME_2 + " 0";
-        assertEquals(message_2, summarizedGames.getFirst());
+        String message2 = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2, 0, 0);
+        assertEquals(message2, summarizedGames.getFirst());
     }
 
     @Test
@@ -53,8 +57,8 @@ public class ScoreBoardTest {
 
         // When
         try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
         } catch (Exception e) {
             exception = e;
         }
@@ -88,7 +92,7 @@ public class ScoreBoardTest {
 
         // When
         try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.HOME_TEAM_NAME);
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1);
         } catch (Exception e) {
             exception = e;
         }
@@ -101,8 +105,8 @@ public class ScoreBoardTest {
     @Test
     public void shouldRemoveGameFromBoardWhenFinishingGame() {
         // When
-        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
-        this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
+        this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
 
         // Then
         List<String> summarizedGames = this.scoreBoard.getSummary();
@@ -133,7 +137,7 @@ public class ScoreBoardTest {
 
         // When
         try {
-            this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+            this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
         } catch (Exception e) {
             exception = e;
         }
@@ -150,8 +154,8 @@ public class ScoreBoardTest {
 
         // When
         try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
-            this.scoreBoard.finishGame(TestUtils.AWAY_TEAM_NAME, TestUtils.HOME_TEAM_NAME);
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
+            this.scoreBoard.finishGame(TestUtils.AWAY_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1);
         } catch (Exception e) {
             exception = e;
         }
@@ -160,7 +164,7 @@ public class ScoreBoardTest {
         assertNotNull(exception);
 
         String message = "Game that should be finished is not ongoing! Did you mean: "
-                + TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME;
+                + TestUtils.HOME_TEAM_NAME_1 + " - " + TestUtils.AWAY_TEAM_NAME_1;
         assertEquals(message, exception.getMessage());
     }
 
@@ -171,7 +175,7 @@ public class ScoreBoardTest {
 
         // When
         try {
-            this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME, TestUtils.HOME_TEAM_NAME);
+            this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1);
         } catch (Exception e) {
             exception = e;
         }
@@ -184,14 +188,16 @@ public class ScoreBoardTest {
     @Test
     public void shouldUpdateGameScore() {
         // When
-        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME, 1, 0);
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 0);
 
         // Then
         List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(1, summarizedGames.size());
 
-        String message = TestUtils.HOME_TEAM_NAME + " 1 - " + TestUtils.AWAY_TEAM_NAME + " 0";
+        String message = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 0);
         assertEquals(message, summarizedGames.getFirst());
     }
 
@@ -202,7 +208,7 @@ public class ScoreBoardTest {
 
         // When
         try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
             this.scoreBoard.updateScore("", "", 0, 0);
         } catch (Exception e) {
             exception = e;
@@ -220,7 +226,8 @@ public class ScoreBoardTest {
 
         // When
         try {
-            this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.HOME_TEAM_NAME, 0, 0);
+            this.scoreBoard.updateScore(
+                    TestUtils.HOME_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1, 0, 0);
         } catch (Exception e) {
             exception = e;
         }
@@ -237,8 +244,9 @@ public class ScoreBoardTest {
 
         // When
         try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
-            this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME, -1, -1);
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
+            this.scoreBoard.updateScore(
+                    TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, -1, -1);
         } catch (Exception e) {
             exception = e;
         }
@@ -255,7 +263,8 @@ public class ScoreBoardTest {
 
         // When
         try {
-            this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME, 1, 0);
+            this.scoreBoard.updateScore(
+                    TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 0);
         } catch (Exception e) {
             exception = e;
         }
@@ -272,8 +281,9 @@ public class ScoreBoardTest {
 
         // When
         try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
-            this.scoreBoard.updateScore(TestUtils.AWAY_TEAM_NAME, TestUtils.HOME_TEAM_NAME, 1 ,0);
+            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
+            this.scoreBoard.updateScore(
+                    TestUtils.AWAY_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1, 1 ,0);
         } catch (Exception e) {
             exception = e;
         }
@@ -282,87 +292,107 @@ public class ScoreBoardTest {
         assertNotNull(exception);
 
         String message = "Game that should be updated is not ongoing! Did you mean: "
-                + TestUtils.HOME_TEAM_NAME + " - " + TestUtils.AWAY_TEAM_NAME;
+                + TestUtils.HOME_TEAM_NAME_1 + " - " + TestUtils.AWAY_TEAM_NAME_1;
         assertEquals(message, exception.getMessage());
     }
 
     @Test
     public void shouldSummarizeMultipleGamesWithDifferentTotalScoresInCorrectOrder() {
         // When
-        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2);
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3);
 
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME, 1, 3);
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2, 3, 3);
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3, 2, 1);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 3);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2, 3, 3);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3, 2, 1);
 
         // Then
         List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(3, summarizedGames.size());
 
-        String message = TestUtils.HOME_TEAM_NAME_2 + " 3 - " + TestUtils.AWAY_TEAM_NAME_2 + " 3";
+        String message = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2, 3, 3);
         assertEquals(message, summarizedGames.get(0));
 
-        String message2 = TestUtils.HOME_TEAM_NAME + " 1 - " + TestUtils.AWAY_TEAM_NAME + " 3";
+        String message2 = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 3);
         assertEquals(message2, summarizedGames.get(1));
 
-        String message3 = TestUtils.HOME_TEAM_NAME_3 + " 2 - " + TestUtils.AWAY_TEAM_NAME_3 + " 1";
+        String message3 = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3, 2, 1);
         assertEquals(message3, summarizedGames.get(2));
     }
 
     @Test
     public void shouldSummarizeMultipleGamesWithIdenticalTotalScoresInCorrectOrder() {
         // When
-        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2);
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3);
 
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME, 1, 3);
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2, 3, 1);
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3, 2, 2);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 3);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2, 3, 1);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3, 2, 2);
 
         // Then
         List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(3, summarizedGames.size());
 
-        String message = TestUtils.HOME_TEAM_NAME_3 + " 2 - " + TestUtils.AWAY_TEAM_NAME_3 + " 2";
+        String message = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3, 2, 2);
         assertEquals(message, summarizedGames.get(0));
 
-        String message2 = TestUtils.HOME_TEAM_NAME_2 + " 3 - " + TestUtils.AWAY_TEAM_NAME_2 + " 1";
+        String message2 = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2, 3, 1);
         assertEquals(message2, summarizedGames.get(1));
 
-        String message3 = TestUtils.HOME_TEAM_NAME + " 1 - " + TestUtils.AWAY_TEAM_NAME + " 3";
+        String message3 = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 3);
         assertEquals(message3, summarizedGames.get(2));
     }
 
     @Test
     public void shouldSummarizeMultipleGamesWithIdenticalAndDifferentTotalScoresInCorrectOrder() {
         // When
-        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME);
+        this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2);
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3);
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_4, TestUtils.AWAY_TEAM_NAME_4);
 
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME, TestUtils.AWAY_TEAM_NAME, 1, 3);
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2, 6, 1);
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3, 0, 2);
-        this.scoreBoard.updateScore(TestUtils.HOME_TEAM_NAME_4, TestUtils.AWAY_TEAM_NAME_4, 3, 1);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 3);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2, 6, 1);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3, 0, 2);
+        this.scoreBoard.updateScore(
+                TestUtils.HOME_TEAM_NAME_4, TestUtils.AWAY_TEAM_NAME_4, 3, 1);
 
         // Then
         List<String> summarizedGames = this.scoreBoard.getSummary();
         assertEquals(4, summarizedGames.size());
 
-        String message = TestUtils.HOME_TEAM_NAME_2 + " 6 - " + TestUtils.AWAY_TEAM_NAME_2 + " 1";
+        String message = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_2, TestUtils.AWAY_TEAM_NAME_2, 6, 1);
         assertEquals(message, summarizedGames.get(0));
 
-        String message2 = TestUtils.HOME_TEAM_NAME_4 + " 3 - " + TestUtils.AWAY_TEAM_NAME_4 + " 1";
+        String message2 = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_4, TestUtils.AWAY_TEAM_NAME_4, 3, 1);
         assertEquals(message2, summarizedGames.get(1));
 
-        String message3 = TestUtils.HOME_TEAM_NAME + " 1 - " + TestUtils.AWAY_TEAM_NAME + " 3";
+        String message3 = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 3);
         assertEquals(message3, summarizedGames.get(2));
 
-        String message4 = TestUtils.HOME_TEAM_NAME_3 + " 0 - " + TestUtils.AWAY_TEAM_NAME_3 + " 2";
+        String message4 = TestUtils.buildMessage(
+                TestUtils.HOME_TEAM_NAME_3, TestUtils.AWAY_TEAM_NAME_3, 0, 2);
         assertEquals(message4, summarizedGames.get(3));
     }
 }
