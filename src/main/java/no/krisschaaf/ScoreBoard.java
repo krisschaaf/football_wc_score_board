@@ -24,11 +24,7 @@ public class ScoreBoard {
         }
 
         GameKey startedGameKey = new GameKey(homeTeamName, awayTeamName);
-        if (this.onGoingGames.containsKey(startedGameKey)) {
-            throw new IllegalArgumentException("Game that should be started is already ongoing!");
-        }
-
-        checkIfTeamIsAlreadyPlaying(homeTeamName, awayTeamName);
+        checkIfGameIsAlreadyOnGoingOrTeamIsAlreadyPlaying(startedGameKey, homeTeamName, awayTeamName);
 
         Game startedGame = new Game(homeTeamName, homeTeamContinent, awayTeamName, awayTeamContinent);
         this.onGoingGames.put(startedGameKey, startedGame);
@@ -83,6 +79,9 @@ public class ScoreBoard {
         return this.continentPointsSummary;
     }
 
+
+    // Helper methods //
+
     private static void validateTeamNames(String homeTeamName, String awayTeamName, String phase) {
         if (homeTeamName == null || awayTeamName == null) {
             throw new IllegalArgumentException("Team names must not be null when " + phase + " game!");
@@ -92,8 +91,12 @@ public class ScoreBoard {
         }
     }
 
-    private void checkIfTeamIsAlreadyPlaying(String homeTeamName, String awayTeamName) {
-        boolean teamAlreadyPlaying = onGoingGames.values().stream()
+    private void checkIfGameIsAlreadyOnGoingOrTeamIsAlreadyPlaying(GameKey gameKey, String homeTeamName, String awayTeamName) {
+        if (this.onGoingGames.containsKey(gameKey)) {
+            throw new IllegalArgumentException("Game that should be started is already ongoing!");
+        }
+
+        boolean teamAlreadyPlaying = this.onGoingGames.values().stream()
                 .anyMatch(game -> game.hasTeam(homeTeamName) || game.hasTeam(awayTeamName));
 
         if (teamAlreadyPlaying) {
