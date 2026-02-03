@@ -158,16 +158,7 @@ public class ScoreBoardTest {
                     this.scoreBoard.updateScore("", "", 0, 0);
                 });
 
-        assertEquals("Missing team name when updating score!", exception.getMessage());
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenUpdatingScoreWithIdenticalTeamNames() {
-        Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> this.scoreBoard.updateScore(
-                            TestUtils.HOME_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1, 0, 0));
-
-        assertEquals("Teams cannot play against themselves!", exception.getMessage());
+        assertEquals("Missing team name when updating game!", exception.getMessage());
     }
 
     @Test

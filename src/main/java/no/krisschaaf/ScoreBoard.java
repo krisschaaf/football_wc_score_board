@@ -51,12 +51,8 @@ public class ScoreBoard {
     }
 
     public void updateScore(String homeTeamName, String awayTeamName, int homeTeamScore, int awayTeamScore) {
-        if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
-            throw new IllegalArgumentException("Missing team name when updating score!");
-        }
-        if (homeTeamName.equals(awayTeamName)) {
-            throw new IllegalArgumentException("Teams cannot play against themselves!");
-        }
+        validateTeamNames(homeTeamName, awayTeamName, "updating");
+
         if (homeTeamScore < 0 || awayTeamScore < 0 ) { // Scores can go backwards
             throw new IllegalArgumentException("Team scores must not be negative when updating score!");
         }
