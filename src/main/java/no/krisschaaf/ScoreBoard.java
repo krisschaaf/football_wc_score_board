@@ -24,14 +24,14 @@ public class ScoreBoard {
         }
 
         GameKey startedGameKey = new GameKey(homeTeamName, awayTeamName);
-        if (onGoingGames.containsKey(startedGameKey)) {
+        if (this.onGoingGames.containsKey(startedGameKey)) {
             throw new IllegalArgumentException("Game that should be started is already ongoing!");
         }
 
         checkIfTeamIsAlreadyPlaying(homeTeamName, awayTeamName);
 
         Game startedGame = new Game(homeTeamName, homeTeamContinent, awayTeamName, awayTeamContinent);
-        onGoingGames.put(startedGameKey, startedGame);
+        this.onGoingGames.put(startedGameKey, startedGame);
 
         updateSummaries();
     }
@@ -40,9 +40,12 @@ public class ScoreBoard {
         validateTeamNames(homeTeamName, awayTeamName, "finishing");
 
         GameKey gameKeyToFinish = new GameKey(homeTeamName, awayTeamName);
-        Game game = this.onGoingGames.remove(gameKeyToFinish);
 
-        checkForInvertedOnGoingGames(homeTeamName, awayTeamName, game, "finished");
+        if (!this.onGoingGames.containsKey(gameKeyToFinish)) {
+            checkForInvertedOnGoingGames(homeTeamName, awayTeamName, "finished");
+        }
+
+        this.onGoingGames.remove(gameKeyToFinish);
 
         updateSummaries();
     }
@@ -55,9 +58,12 @@ public class ScoreBoard {
         }
 
         GameKey gameKeyToUpdate = new GameKey(homeTeamName, awayTeamName);
-        Game gameToUpdate = this.onGoingGames.get(gameKeyToUpdate);
 
-        checkForInvertedOnGoingGames(homeTeamName, awayTeamName, gameToUpdate, "updated");
+        if (!this.onGoingGames.containsKey(gameKeyToUpdate)) {
+            checkForInvertedOnGoingGames(homeTeamName, awayTeamName, "updated");
+        }
+
+        Game gameToUpdate = this.onGoingGames.get(gameKeyToUpdate);
 
         if(homeTeamScore < gameToUpdate.getHomeTeamScore() || awayTeamScore < gameToUpdate.getAwayTeamScore()) {
             throw new IllegalArgumentException("Team scores must be ascending!");
@@ -95,17 +101,15 @@ public class ScoreBoard {
         }
     }
 
-    private void checkForInvertedOnGoingGames(String homeTeamName, String awayTeamName, Game game, String phase) {
-        if (game == null) {
-            GameKey invertedGameKey = new GameKey(awayTeamName, homeTeamName);
+    private void checkForInvertedOnGoingGames(String homeTeamName, String awayTeamName, String phase) {
+        GameKey invertedGameKey = new GameKey(awayTeamName, homeTeamName);
 
-            String message = this.onGoingGames.containsKey(invertedGameKey)
-                    ? "Game that should be " + phase + " is not ongoing! Did you mean: "
-                    + awayTeamName + " - " + homeTeamName
-                    : "Game that should be " + phase + " is not ongoing!";
+        String message = this.onGoingGames.containsKey(invertedGameKey)
+                ? "Game that should be " + phase + " is not ongoing! Did you mean: "
+                + awayTeamName + " - " + homeTeamName
+                : "Game that should be " + phase + " is not ongoing!";
 
-            throw new IllegalArgumentException(message);
-        }
+        throw new IllegalArgumentException(message);
     }
 
     private void updateSummaries() {
