@@ -104,6 +104,14 @@ public class ScoreBoardTest {
     }
 
     @Test
+    public void shouldThrowExceptionWhenFinishingGameWithNullTeamNames() {
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> this.scoreBoard.finishGame(null, null));
+
+        assertEquals("Team names must not be null when finishing game!", exception.getMessage());
+    }
+
+    @Test
     public void shouldThrowExceptionWhenFinishingGameIsNotOngoing() {
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () ->  this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1));

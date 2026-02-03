@@ -37,6 +37,9 @@ public class ScoreBoard {
     }
 
     public void finishGame(String homeTeamName, String awayTeamName) {
+        if (homeTeamName == null || awayTeamName == null) {
+            throw new IllegalArgumentException("Team names must not be null when finishing game!");
+        }
         if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
             throw new IllegalArgumentException("Missing team name when finishing game!");
         }
