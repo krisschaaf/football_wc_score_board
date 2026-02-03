@@ -16,12 +16,8 @@ public class ScoreBoard {
                           Continent homeTeamContinent,
                           String awayTeamName,
                           Continent awayTeamContinent) {
-        if (homeTeamName == null || awayTeamName == null) {
-            throw new IllegalArgumentException("Team names must not be null when starting game!");
-        }
-        if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
-            throw new IllegalArgumentException("Missing team name when starting game!");
-        }
+        validateTeamNames(homeTeamName, awayTeamName, "starting");
+
         if (homeTeamName.equals(awayTeamName)) {
             throw new IllegalArgumentException("Teams cannot play against themselves!");
         }
@@ -37,12 +33,7 @@ public class ScoreBoard {
     }
 
     public void finishGame(String homeTeamName, String awayTeamName) {
-        if (homeTeamName == null || awayTeamName == null) {
-            throw new IllegalArgumentException("Team names must not be null when finishing game!");
-        }
-        if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
-            throw new IllegalArgumentException("Missing team name when finishing game!");
-        }
+        validateTeamNames(homeTeamName, awayTeamName, "finishing");
 
         GameKey gameKeyToFinish = new GameKey(homeTeamName, awayTeamName);
         Game game = this.onGoingGames.remove(gameKeyToFinish);
@@ -121,5 +112,14 @@ public class ScoreBoard {
                         .thenComparing(e -> e.getKey().name()))
                 .map(entry -> entry.getKey() + ": " + entry.getValue())
                 .toList();
+    }
+
+    private static void validateTeamNames(String homeTeamName, String awayTeamName, String phase) {
+        if (homeTeamName == null || awayTeamName == null) {
+            throw new IllegalArgumentException("Team names must not be null when " + phase + " game!");
+        }
+        if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
+            throw new IllegalArgumentException("Missing team name when " + phase + " game!");
+        }
     }
 }
