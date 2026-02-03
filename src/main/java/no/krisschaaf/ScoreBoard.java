@@ -63,7 +63,7 @@ public class ScoreBoard {
         if (homeTeamName.equals(awayTeamName)) {
             throw new IllegalArgumentException("Teams cannot play against themselves!");
         }
-        if (homeTeamScore < 0 || awayTeamScore < 0 ) {
+        if (homeTeamScore < 0 || awayTeamScore < 0 ) { // Scores can go backwards
             throw new IllegalArgumentException("Team scores must not be negative when updating score!");
         }
 
@@ -87,13 +87,9 @@ public class ScoreBoard {
 
     public List<String> getSummary() {
         return onGoingGames.values().stream()
-                .sorted((g1, g2) -> {
-                    int comp = g2.getTotalScore() - g1.getTotalScore();
-                    if (comp == 0) {
-                        return g2.getCreatedAt().compareTo(g1.getCreatedAt());
-                    }
-                    return comp;
-                })
+                .sorted(Comparator
+                        .comparingInt(Game::getTotalScore)
+                        .thenComparing(Game::getCreatedAt).reversed())
                 .map(Game::toString)
                 .toList();
     }
