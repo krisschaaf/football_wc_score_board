@@ -61,6 +61,17 @@ public class ScoreBoardTest {
     }
 
     @Test
+    public void shouldThrowExceptionWhenTeamIsAlreadyParticipatingInOnGoingGame() {
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
+                    this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_2, Continent.SOUTH_AMERICA);
+                });
+
+        assertEquals("Team is already participating in game!", exception.getMessage());
+    }
+
+    @Test
     public void shouldThrowExceptionWhenStartingGameWithEmptyTeamNames() {
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> this.scoreBoard.startGame("", Continent.SOUTH_AMERICA, "", Continent.SOUTH_AMERICA));
