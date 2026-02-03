@@ -1,15 +1,16 @@
 package no.krisschaaf;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ScoreBoard {
     private final HashMap<GameKey, Game> onGoingGames;
+    private List<String> onGoingGamesSummary;
+    private List<String> continentPointsSummary;
 
     public ScoreBoard() {
         this.onGoingGames = new HashMap<>();
+        this.onGoingGamesSummary = new ArrayList<>();
+        this.continentPointsSummary = new ArrayList<>();
     }
 
     public void startGame(String homeTeamName,
@@ -30,6 +31,8 @@ public class ScoreBoard {
         if (game != null) {
             throw new IllegalArgumentException("Game that should be started is already ongoing!");
         }
+
+        updateOnGoingGamesSummary();
     }
 
     public void finishGame(String homeTeamName, String awayTeamName) {
@@ -48,6 +51,8 @@ public class ScoreBoard {
 
             throw new IllegalArgumentException(message);
         }
+
+        updateOnGoingGamesSummary();
     }
 
     public void updateScore(String homeTeamName, String awayTeamName, int homeTeamScore, int awayTeamScore) {
@@ -77,18 +82,35 @@ public class ScoreBoard {
 
         gameToUpdate.setHomeTeamScore(homeTeamScore);
         gameToUpdate.setAwayTeamScore(awayTeamScore);
+
+        updateOnGoingGamesSummary();
     }
 
     public List<String> getSummary() {
-        return onGoingGames.values().stream()
+        return this.onGoingGamesSummary;
+    }
+
+    public List<String> getContinentSummary() {
+        return this.continentPointsSummary;
+    }
+
+    private static void validateTeamNames(String homeTeamName, String awayTeamName, String phase) {
+        if (homeTeamName == null || awayTeamName == null) {
+            throw new IllegalArgumentException("Team names must not be null when " + phase + " game!");
+        }
+        if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
+            throw new IllegalArgumentException("Missing team name when " + phase + " game!");
+        }
+    }
+
+    private void updateOnGoingGamesSummary() {
+        this.onGoingGamesSummary = this.onGoingGames.values().stream()
                 .sorted(Comparator
                         .comparingInt(Game::getTotalScore)
                         .thenComparing(Game::getCreatedAt).reversed())
                 .map(Game::toString)
                 .toList();
-    }
 
-    public List<String> getContinentSummary() {
         HashMap<Continent, Integer> pointsPerContinent = new HashMap<>();
 
         this.onGoingGames.values().forEach(game -> {
@@ -105,21 +127,12 @@ public class ScoreBoard {
             );
         });
 
-        return pointsPerContinent.entrySet().stream()
+        this.continentPointsSummary = pointsPerContinent.entrySet().stream()
                 .sorted(Comparator
                         .comparingInt((Map.Entry<Continent, Integer> e) -> e.getValue())
                         .reversed()
                         .thenComparing(e -> e.getKey().name()))
                 .map(entry -> entry.getKey() + ": " + entry.getValue())
                 .toList();
-    }
-
-    private static void validateTeamNames(String homeTeamName, String awayTeamName, String phase) {
-        if (homeTeamName == null || awayTeamName == null) {
-            throw new IllegalArgumentException("Team names must not be null when " + phase + " game!");
-        }
-        if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
-            throw new IllegalArgumentException("Missing team name when " + phase + " game!");
-        }
     }
 }
