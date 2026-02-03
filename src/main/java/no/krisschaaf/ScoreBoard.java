@@ -41,16 +41,7 @@ public class ScoreBoard {
         GameKey gameKeyToFinish = new GameKey(homeTeamName, awayTeamName);
         Game game = this.onGoingGames.remove(gameKeyToFinish);
 
-        if (game == null) {
-            GameKey invertedGameKey = new GameKey(awayTeamName, homeTeamName);
-
-            String message = onGoingGames.containsKey(invertedGameKey)
-                    ? "Game that should be finished is not ongoing! Did you mean: "
-                            + awayTeamName + " - " + homeTeamName
-                    : "Game that should be finished is not ongoing!";
-
-            throw new IllegalArgumentException(message);
-        }
+        checkForInvertedOnGoingGames(homeTeamName, awayTeamName, game, "finished");
 
         updateOnGoingGamesSummary();
     }
@@ -65,16 +56,7 @@ public class ScoreBoard {
         GameKey gameKeyToUpdate = new GameKey(homeTeamName, awayTeamName);
         Game gameToUpdate = this.onGoingGames.get(gameKeyToUpdate);
 
-        if (gameToUpdate == null) {
-            GameKey invertedGameKey = new GameKey(awayTeamName, homeTeamName);
-
-            String message = onGoingGames.containsKey(invertedGameKey)
-                    ? "Game that should be updated is not ongoing! Did you mean: "
-                    + awayTeamName + " - " + homeTeamName
-                    : "Game that should be updated is not ongoing!";
-
-            throw new IllegalArgumentException(message);
-        }
+        checkForInvertedOnGoingGames(homeTeamName, awayTeamName, gameToUpdate, "updated");
 
         if(homeTeamScore < gameToUpdate.getHomeTeamScore() || awayTeamScore < gameToUpdate.getAwayTeamScore()) {
             throw new IllegalArgumentException("Team scores must be ascending!");
@@ -100,6 +82,19 @@ public class ScoreBoard {
         }
         if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
             throw new IllegalArgumentException("Missing team name when " + phase + " game!");
+        }
+    }
+
+    private void checkForInvertedOnGoingGames(String homeTeamName, String awayTeamName, Game game, String phase) {
+        if (game == null) {
+            GameKey invertedGameKey = new GameKey(awayTeamName, homeTeamName);
+
+            String message = this.onGoingGames.containsKey(invertedGameKey)
+                    ? "Game that should be " + phase + " is not ongoing! Did you mean: "
+                    + awayTeamName + " - " + homeTeamName
+                    : "Game that should be " + phase + " is not ongoing!";
+
+            throw new IllegalArgumentException(message);
         }
     }
 
