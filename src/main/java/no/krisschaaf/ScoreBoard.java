@@ -43,9 +43,6 @@ public class ScoreBoard {
         if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
             throw new IllegalArgumentException("Missing team name when finishing game!");
         }
-        if (homeTeamName.equals(awayTeamName)) {
-            throw new IllegalArgumentException("Teams cannot play against themselves!");
-        }
 
         GameKey gameKeyToFinish = new GameKey(homeTeamName, awayTeamName);
         Game game = this.onGoingGames.remove(gameKeyToFinish);

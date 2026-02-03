@@ -134,14 +134,6 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenTeamShouldFinishAgainstThemself() {
-        Exception exception = assertThrows(IllegalArgumentException.class,
-                () ->  this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1));
-
-        assertEquals("Teams cannot play against themselves!", exception.getMessage());
-    }
-
-    @Test
     public void shouldUpdateGameScore() {
         // When
         this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
