@@ -69,6 +69,14 @@ public class ScoreBoardTest {
     }
 
     @Test
+    public void shouldThrowExceptionWhenStartingGameWithNullTeamNames() {
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> this.scoreBoard.startGame(null, Continent.SOUTH_AMERICA, null, Continent.SOUTH_AMERICA));
+
+        assertEquals("Team names must not be null when starting game!", exception.getMessage());
+    }
+
+    @Test
     public void shouldThrowExceptionWhenTeamShouldPlayAgainstThemself() {
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA));

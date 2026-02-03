@@ -16,6 +16,9 @@ public class ScoreBoard {
                           Continent homeTeamContinent,
                           String awayTeamName,
                           Continent awayTeamContinent) {
+        if (homeTeamName == null || awayTeamName == null) {
+            throw new IllegalArgumentException("Team names must not be null when starting game!");
+        }
         if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
             throw new IllegalArgumentException("Missing team name when starting game!");
         }
