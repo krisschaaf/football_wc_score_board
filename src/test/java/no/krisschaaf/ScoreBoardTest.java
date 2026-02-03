@@ -51,53 +51,28 @@ public class ScoreBoardTest {
 
     @Test
     public void shouldThrowExceptionWhenToBeStartedGameIsAlreadyOngoing() {
-        // Given
-        Exception exception = null;
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
+                    this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
+                });
 
-        // When
-        try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
         assertEquals("Game that should be started is already ongoing!", exception.getMessage());
     }
 
     @Test
     public void shouldThrowExceptionWhenStartingGameWithEmptyTeamNames() {
-        // Given
-        Exception exception = null;
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> this.scoreBoard.startGame("", Continent.SOUTH_AMERICA, "", Continent.SOUTH_AMERICA));
 
-        // When
-        try {
-            this.scoreBoard.startGame("", Continent.SOUTH_AMERICA, "", Continent.SOUTH_AMERICA);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
         assertEquals("Missing team name when starting game!", exception.getMessage());
     }
 
     @Test
     public void shouldThrowExceptionWhenTeamShouldPlayAgainstThemself() {
-        // Given
-        Exception exception = null;
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA));
 
-        // When
-        try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
         assertEquals("Teams cannot play against themselves!", exception.getMessage());
     }
 
@@ -114,73 +89,39 @@ public class ScoreBoardTest {
 
     @Test
     public void shouldThrowExceptionWhenFinishingGameWithEmptyTeamNames() {
-        // Given
-        Exception exception = null;
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> this.scoreBoard.finishGame("", ""));
 
-        // When
-        try {
-            this.scoreBoard.finishGame("", "");
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
         assertEquals("Missing team name when finishing game!", exception.getMessage());
     }
 
     @Test
     public void shouldThrowExceptionWhenFinishingGameIsNotOngoing() {
-        // Given
-        Exception exception = null;
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () ->  this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1));
 
-        // When
-        try {
-            this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
         assertEquals("Game that should be finished is not ongoing!", exception.getMessage());
     }
 
     @Test
     public void shouldThrowExceptionAndProposeOngoingGameWhenReceivedTeamNamesForFinishingAGameWereInverted() {
-        // Given
-        Exception exception = null;
-
-        // When
-        try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
-            this.scoreBoard.finishGame(TestUtils.AWAY_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
+                    this.scoreBoard.finishGame(TestUtils.AWAY_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1);
+                });
 
         String message = "Game that should be finished is not ongoing! Did you mean: "
                 + TestUtils.HOME_TEAM_NAME_1 + " - " + TestUtils.AWAY_TEAM_NAME_1;
+
         assertEquals(message, exception.getMessage());
     }
 
     @Test
     public void shouldThrowExceptionWhenTeamShouldFinishAgainstThemself() {
-        // Given
-        Exception exception = null;
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () ->  this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1));
 
-        // When
-        try {
-            this.scoreBoard.finishGame(TestUtils.HOME_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
         assertEquals("Teams cannot play against themselves!", exception.getMessage());
     }
 
@@ -197,101 +138,63 @@ public class ScoreBoardTest {
 
         String message = TestUtils.buildMessage(
                 TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 0);
+
         assertEquals(message, summarizedGames.getFirst());
     }
 
     @Test
     public void shouldThrowExceptionWhenUpdatingScoreWithoutTeamNames() {
-        // Given
-        Exception exception = null;
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () ->  {
+                    this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
+                    this.scoreBoard.updateScore("", "", 0, 0);
+                });
 
-        // When
-        try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
-            this.scoreBoard.updateScore("", "", 0, 0);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
         assertEquals("Missing team name when updating score!", exception.getMessage());
     }
 
     @Test
     public void shouldThrowExceptionWhenUpdatingScoreWithIdenticalTeamNames() {
-        // Given
-        Exception exception = null;
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> this.scoreBoard.updateScore(
+                            TestUtils.HOME_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1, 0, 0));
 
-        // When
-        try {
-            this.scoreBoard.updateScore(
-                    TestUtils.HOME_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1, 0, 0);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
         assertEquals("Teams cannot play against themselves!", exception.getMessage());
     }
 
     @Test
     public void shouldThrowExceptionWhenUpdatingScoreWithNegativeTeamScores() {
-        // Given
-        Exception exception = null;
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () ->  {
+                    this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
+                    this.scoreBoard.updateScore(
+                            TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, -1, -1);
+                });
 
-        // When
-        try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
-            this.scoreBoard.updateScore(
-                    TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, -1, -1);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
         assertEquals("Team scores must not be negative when updating score!", exception.getMessage());
     }
 
     @Test
     public void shouldThrowExceptionWhenUpdatingScoresForNotOngoingGame() {
-        // Given
-        Exception exception = null;
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () ->  this.scoreBoard.updateScore(
+                            TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 0));
 
-        // When
-        try {
-            this.scoreBoard.updateScore(
-                    TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 0);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
         assertEquals("Game that should be updated is not ongoing!", exception.getMessage());
     }
 
     @Test
     public void shouldThrowExceptionAndProposeOngoingGameWhenReceivedTeamNamesForUpdatingAGameWereInverted() {
-        // Given
-        Exception exception = null;
-
-        // When
-        try {
-            this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
-            this.scoreBoard.updateScore(
-                    TestUtils.AWAY_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1, 1 ,0);
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        // Then
-        assertNotNull(exception);
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () ->  {
+                    this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
+                    this.scoreBoard.updateScore(
+                            TestUtils.AWAY_TEAM_NAME_1, TestUtils.HOME_TEAM_NAME_1, 1 ,0);
+                });
 
         String message = "Game that should be updated is not ongoing! Did you mean: "
                 + TestUtils.HOME_TEAM_NAME_1 + " - " + TestUtils.AWAY_TEAM_NAME_1;
+
         assertEquals(message, exception.getMessage());
     }
 
