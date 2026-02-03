@@ -53,7 +53,7 @@ public class ScoreBoard {
     public void updateScore(String homeTeamName, String awayTeamName, int homeTeamScore, int awayTeamScore) {
         validateTeamNames(homeTeamName, awayTeamName, "updating");
 
-        if (homeTeamScore < 0 || awayTeamScore < 0 ) { // Scores can go backwards
+        if (homeTeamScore < 0 || awayTeamScore < 0 ) {
             throw new IllegalArgumentException("Team scores must not be negative when updating score!");
         }
 
@@ -69,6 +69,10 @@ public class ScoreBoard {
                     : "Game that should be updated is not ongoing!";
 
             throw new IllegalArgumentException(message);
+        }
+
+        if(homeTeamScore < gameToUpdate.getHomeTeamScore() || awayTeamScore < gameToUpdate.getAwayTeamScore()) {
+            throw new IllegalArgumentException("Team scores must be ascending!");
         }
 
         gameToUpdate.setHomeTeamScore(homeTeamScore);

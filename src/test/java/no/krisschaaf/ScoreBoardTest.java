@@ -174,6 +174,20 @@ public class ScoreBoardTest {
     }
 
     @Test
+    public void shouldThrowExceptionWhenUpdatingScoreDescending() {
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    this.scoreBoard.startGame(TestUtils.HOME_TEAM_NAME_1, Continent.SOUTH_AMERICA, TestUtils.AWAY_TEAM_NAME_1, Continent.SOUTH_AMERICA);
+                    this.scoreBoard.updateScore(
+                            TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 2, 1);
+                    this.scoreBoard.updateScore(
+                            TestUtils.HOME_TEAM_NAME_1, TestUtils.AWAY_TEAM_NAME_1, 1, 1);
+                });
+
+        assertEquals("Team scores must be ascending!", exception.getMessage());
+    }
+
+    @Test
     public void shouldThrowExceptionWhenUpdatingScoresForNotOngoingGame() {
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () ->  this.scoreBoard.updateScore(
