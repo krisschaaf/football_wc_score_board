@@ -32,7 +32,7 @@ public class ScoreBoard {
             throw new IllegalArgumentException("Game that should be started is already ongoing!");
         }
 
-        updateOnGoingGamesSummary();
+        updateSummaries();
     }
 
     public void finishGame(String homeTeamName, String awayTeamName) {
@@ -43,7 +43,7 @@ public class ScoreBoard {
 
         checkForInvertedOnGoingGames(homeTeamName, awayTeamName, game, "finished");
 
-        updateOnGoingGamesSummary();
+        updateSummaries();
     }
 
     public void updateScore(String homeTeamName, String awayTeamName, int homeTeamScore, int awayTeamScore) {
@@ -65,7 +65,7 @@ public class ScoreBoard {
         gameToUpdate.setHomeTeamScore(homeTeamScore);
         gameToUpdate.setAwayTeamScore(awayTeamScore);
 
-        updateOnGoingGamesSummary();
+        updateSummaries();
     }
 
     public List<String> getSummary() {
@@ -98,7 +98,7 @@ public class ScoreBoard {
         }
     }
 
-    private void updateOnGoingGamesSummary() {
+    private void updateSummaries() {
         this.onGoingGamesSummary = this.onGoingGames.values().stream()
                 .sorted(Comparator
                         .comparingInt(Game::getTotalScore)
