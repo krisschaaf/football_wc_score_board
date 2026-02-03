@@ -1,7 +1,9 @@
 package no.krisschaaf;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ScoreBoard {
     private final HashMap<GameKey, Game> onGoingGames;
@@ -10,7 +12,10 @@ public class ScoreBoard {
         this.onGoingGames = new HashMap<>();
     }
 
-    public void startGame(String homeTeamName, String awayTeamName) {
+    public void startGame(String homeTeamName,
+                          Continent homeTeamContinent,
+                          String awayTeamName,
+                          Continent awayTeamContinent) {
         if (homeTeamName.isEmpty() || awayTeamName.isEmpty()) {
             throw new IllegalArgumentException("Missing team name when starting game!");
         }
@@ -19,7 +24,7 @@ public class ScoreBoard {
         }
 
         GameKey startedGameKey = new GameKey(homeTeamName, awayTeamName);
-        Game startedGame = new Game(homeTeamName, awayTeamName);
+        Game startedGame = new Game(homeTeamName, homeTeamContinent, awayTeamName, awayTeamContinent);
 
         Game game = onGoingGames.put(startedGameKey, startedGame);
 
@@ -90,6 +95,32 @@ public class ScoreBoard {
                     return comp;
                 })
                 .map(Game::toString)
+                .toList();
+    }
+
+    public List<String> getContinentSummary() {
+        HashMap<Continent, Integer> pointsPerContinent = new HashMap<>();
+
+        this.onGoingGames.values().forEach(game -> {
+            pointsPerContinent.merge(
+                    game.getHomeTeamContinent(),
+                    game.getHomeTeamScore(),
+                    Integer::sum
+            );
+
+            pointsPerContinent.merge(
+                    game.getAwayTeamContinent(),
+                    game.getAwayTeamScore(),
+                    Integer::sum
+            );
+        });
+
+        return pointsPerContinent.entrySet().stream()
+                .sorted(Comparator
+                        .comparingInt((Map.Entry<Continent, Integer> e) -> e.getValue())
+                        .reversed()
+                        .thenComparing(e -> e.getKey().name()))
+                .map(entry -> entry.getKey() + ": " + entry.getValue())
                 .toList();
     }
 }

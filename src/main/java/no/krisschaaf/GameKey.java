@@ -1,4 +1,4 @@
 package no.krisschaaf;
 
-public record GameKey(String homeTeamName, String awayTeamName) {
+record GameKey(String homeTeamName, String awayTeamName) {
 }
